@@ -12,48 +12,55 @@ class ArtistRouter {
     this._router.post('/', this._checkArtist, this.handlePostArtist.bind(this))
     this._router.put('/', this.handlePutArtist.bind(this))
     this._router.delete('/', this.handleDeleteArtist.bind(this))
-    this._router.get('/id', this.handleGetOneArtist.bind(this))
     this._router.get('/', this.handleGetArtist.bind(this))
-    this._router.get('/idGenre', this.handleGetGenre.bind(this))
   }
 
-  handlePostArtist (req, res) {
-    const artist = req.body
-    const result = this._ctrl.createNewArtist(artist)
-    this._response.success(req, res, result, this._httpCode.OK)
-    // res.send(result)
+  async handlePostArtist (req, res) {
+    try {
+      const artist = req.body
+      const result = await this._ctrl.createNewArtist(artist)
+      this._response.success(req, res, result, this._httpCode.OK)
+    } catch (error) {
+      this._response.success(req, res, error, this._httpCode.INTERNAL_SERVER_ERROR)
+    }
   }
 
-  handlePutArtist (req, res) {
-    const artist = req.body
-    const result = this._ctrl.updateArtist(artist)
-    this._response.success(req, res, result, this._httpCode.OK)
-    // res.send(result)
+  async handlePutArtist (req, res) {
+    try {
+      const artist = req.body
+      const result = await this._ctrl.updateArtist(artist)
+      this._response.success(req, res, result, this._httpCode.OK)
+    } catch (error) {
+      this._response.success(req, res, error, this._httpCode.INTERNAL_SERVER_ERROR)
+    }
   }
 
-  handleDeleteArtist (req, res) {
-    const artist = req.body
-    const result = this._ctrl.deleteArtist(artist._id)
-    this._response.success(req, res, result, this._httpCode.OK)
-    // res.send(result)
+  async handleDeleteArtist (req, res) {
+    try {
+      const artist = req.body
+      const result = await this._ctrl.deleteArtist(artist._id)
+      this._response.success(req, res, result, this._httpCode.OK)
+    } catch (error) {
+      this._response.success(req, res, error, this._httpCode.INTERNAL_SERVER_ERROR)
+    }
   }
 
-  handleGetOneArtist (req, res) {
-    const artist = req.body
-    const result = this._ctrl.getOneArtist(artist)
-    res.send(result)
-  }
-
-  handleGetArtist (req, res) {
-    const result = this._ctrl.getAllArtist()
-    this._response.success(req, res, result, this._httpCode.OK)
-    // res.send(result)
-  }
-
-  handleGetGenre (req, res) {
-    const genre = req.body
-    const result = this._ctrl.getGenre(genre)
-    res.send(result)
+  async handleGetArtist (req, res) {
+    if (Object.keys(req.query).length > 0) {
+      try {
+        const result = await this._ctrl.getOneArtist('_name', req.query._name)
+        this._response.success(req, res, result, this._httpCode.OK)
+      } catch (error) {
+        this._response.success(req, res, error, this._httpCode.INTERNAL_SERVER_ERROR)
+      }
+    } else {
+      try {
+        const result = await this._ctrl.getAllArtist()
+        this._response.success(req, res, result, this._httpCode.OK)
+      } catch (error) {
+        this._response.success(req, res, error, this._httpCode.INTERNAL_SERVER_ERROR)
+      }
+    }
   }
 }
 

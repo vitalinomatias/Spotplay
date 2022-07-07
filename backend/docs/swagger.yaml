@@ -1,9 +1,98 @@
+# openapi: 3.0.0
+# info:
+#   title: Spotplay
+#   description: 'Es una plataforma de musica'
+#   contact:
+#     email: vitalino.1990@gmail.com
+#   license:
+#     name: Apache 2.0
+#     url: http://apache.org
+#   version: 1.0.0
+# servers:
+# - url: http://localhost:4000/api/v1
+# tags:
+# - name: Song
+#   description: canciones de la aplicacion
+# - name: User
+#   description: usuarios de la plataforma
+# - name: Playlist
+#   description: playlist de los usuarios
+# components:
+#   schemas:
+#     Song:
+#       type: object
+#       properties:
+#         id:
+#           type: integer
+#           format: int64
+#         title:
+#           type: string
+#         uri:
+#           type: string
+#         duration:
+#           type: string
+#         imagen:
+#           type: string
+#         idAlbum:
+#           type: integer
+#           format: int64
+#         idArtist:
+#           type: integer
+#           format: int64
+#         idGenre:
+#           type: integer
+#           format: int32
+#     User:
+#       type: object
+#       properties:
+#         id:
+#           type: integer
+#           format: int64
+#         username:
+#           type: string
+#         email:
+#           type: string
+#         password:
+#           type: string
+#         status:
+#           type: integer
+#           format: int64
+# paths:
+#   /user/singup:
+#     post:
+#       tags:
+#       - User
+#       summary: Crear un usuario
+#       operationId: createUser
+#       description: Se creara un usuaio para utilizarlo  la app
+#       requestBody:
+#         description: ingrese los datos del usuario a crear.
+#         content:
+#           application/json:
+#             schema:
+#               $ref: '#/components/schemas/User'
+#           application/xml:
+#             schema:
+#               $ref: '#/components/schemas/User'
+#         required: true
+#       response:
+#         200:
+#           description: registro exitoso!
+#           content:
+#             application/json:
+#               schema:
+#                 $ref: '#/components/schemas/User'
+#         400:
+#           description: bad request
+#           content: {}
+#     x-codegen-request-body-name: body
+
 openapi: 3.0.0
 info:
   title: Spotplay
-  description: 'Es una plataforma de musica'
+  description: 'Es una plataforma de musica y mas ...'
   contact:
-    email: vitalino.1990@gmail.com
+    email: suport@spotplay.com
   license:
     name: Apache 2.0
     url: http://apache.org
@@ -13,10 +102,16 @@ servers:
 tags:
 - name: Song
   description: canciones de la aplicacion
-- name: User
-  description: usuarios de la plataforma
+- name: Artist
+  description: Artistas de la apliacion
+- name: Genre
+  description: Generos musicales de la apliacion
 - name: Playlist
   description: playlist de los usuarios
+- name: User
+  description: usuarios de la plataforma
+- name: Auth
+  description: Autenticacion de los usuarios a la plataforma
 components:
   schemas:
     Song:
@@ -29,17 +124,58 @@ components:
           type: string
         uri:
           type: string
-        duration:
+        image: 
           type: string
-        imagen:
-          type: string
-        idAlbum:
-          type: integer
-          format: int64
         idArtist:
           type: integer
-          format: int64
+          format: int32
         idGenre:
+          type: integer
+          format: int32
+        status:
+          type: integer
+          format: int32
+    Artist:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        avatar:
+          type: string
+        idGenre:
+          type: integer
+          format: int32
+        status:
+          type: integer
+          format: int32
+    Genre:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        status:
+          type: integer
+          format: int32
+    Playlist:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        image:
+          type: string
+        idUser:
+          type: integer
+          format: int32
+        status:
           type: integer
           format: int32
     User:
@@ -50,32 +186,154 @@ components:
           format: int64
         username:
           type: string
-        email:
+        name:
           type: string
-        password:
+        email: 
           type: string
+        password: 
+          type: string
+        avatar: 
+          type: string
+        idRole:
+          type: integer
+          format: int32
+        idAccount:
+          type: integer
+          format: int32
         status:
           type: integer
-          format: int64
+          format: int32
+    Auth:
+      type: object
+      properties:
+        username:
+          type: string
+        password: 
+          type: string
 paths:
-  /user/singup:
+  /song:
+    post:
+      tags:
+      - Song
+      summary: Crear una canción
+      operantionId: createSong
+      description: Se creara una cancion para registrar en la plataforma
+      requestBody:
+        description: Ingresar los datos de la canción a crear
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Song'
+        required: true
+      responses:
+        200:
+          description: registro exitoso!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Song'
+        400:
+          description: bad request
+          content: {}
+        404:
+          description: not found
+          content: {}
+  /artist:
+    post:
+      tags:
+      - Artist
+      summary: Crear un artista
+      operantionId: createArtist
+      description: Se creara un artista
+      requestBody:
+        description: Ingresar los datos del artista
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Artist'
+        required: true
+      responses:
+        200:
+          description: registro exitoso!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artist'
+        400:
+          description: bad request
+          content: {}
+        404:
+          description: not found
+          content: {}
+  /genre:
+    post:
+      tags:
+      - Genre
+      summary: Crear un genero musical
+      operantionId: createGenre
+      description: Se creara un nuevo genero musical
+      requestBody:
+        description: Ingresar los datos del gener
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Genre'
+        required: true
+      responses:
+        200:
+          description: registro exitoso!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Genre'
+        400:
+          description: bad request
+          content: {}
+        404:
+          description: not found
+          content: {}
+  /playlist:
+    post:
+      tags:
+      - Playlist
+      summary: Crear una playlist nueva
+      operantionId: createPlaylist
+      description: Se creara un nueva playlist
+      requestBody:
+        description: Ingresar los datos de la playlist
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Playlist'
+        required: true
+      responses:
+        200:
+          description: registro exitoso!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Playlist'
+        400:
+          description: bad request
+          content: {}
+        404:
+          description: not found
+          content: {}
+  /user/signup:
     post:
       tags:
       - User
-      summary: Crear un usuario
-      operationId: createUser
-      description: Se creara un usuaio para utilizarlo  la app
+      summary: Crear un nuevo usuario
+      operantionId: createUser
+      description: Se creara un nueuvo usuario
       requestBody:
-        description: ingrese los datos del usuario a crear.
+        description: Ingresar los datos del usuario
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/User'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/User'
         required: true
-      response:
+      responses:
         200:
           description: registro exitoso!
           content:
@@ -85,4 +343,33 @@ paths:
         400:
           description: bad request
           content: {}
-    x-codegen-request-body-name: body
+        404:
+          description: not found
+          content: {}
+  /auth/singin:
+    post:
+      tags:
+      - Auth
+      summary: Autentica un usuario
+      operantionId: AuthUser
+      description: Se autentica un usuario
+      requestBody:
+        description: Ingresar los datos de autenticacion
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Auth'
+        required: true
+      responses:
+        200:
+          description: registro exitoso!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Auth'
+        400:
+          description: bad request
+          content: {}
+        404:
+          description: not found
+          content: {}

@@ -4,29 +4,29 @@ class GenreController {
     this._entity = genre
   }
 
-  createNewGenre (genre) {
+  async createNewGenre (genre) {
     const newGenre = new this._entity(genre)
-    const response = this._service.save('genre', newGenre)
+    const response = await this._service.save('genre', newGenre)
     return response
   }
 
-  updateGenre (genre) {
-    const response = this._service.update('genre', genre)
+  async updateGenre (genre) {
+    const response = await this._service.update('genre', genre)
     return response
   }
 
-  deleteGenre (id) {
-    const response = this._service.delete('genre', id)
+  async deleteGenre (id) {
+    const response = await this._service.delete('genre', id)
     return response
   }
 
-  getOneGenre (id) {
-    console.log(id)
-    return 'genre'
+  async getOneGenre (atribute, value) {
+    const response = await this._service.findByAtribute('genre', atribute, value)
+    return response
   }
 
-  getAllGenre () {
-    const response = this._service.all('genre')
+  async getAllGenre () {
+    const response = await this._service.all('genre')
     return response
   }
 }

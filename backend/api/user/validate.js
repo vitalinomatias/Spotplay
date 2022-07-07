@@ -26,7 +26,6 @@ export const validateCreteUser = [
     .exists()
     .not()
     .isEmpty()
-    .isURL()
     .withMessage('la uri es incorrecta'),
   check('idRole')
     .exists()

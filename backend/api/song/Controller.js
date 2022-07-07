@@ -6,46 +6,30 @@ class SongController {
     this._entity = song
   }
 
-  createNewSong (song) {
+  async createNewSong (song) {
     const newSong = new this._entity(song)
-    const response = this._service.save('song', newSong)
+    const response = await this._service.save('songs', newSong)
     return response
   }
 
-  updateSong (song) {
-    const response = this._service.update('song', song)
-    return response
-    // console.log(song)
-    // return 'Updated a song'
-  }
-
-  deleteSong (id) {
-    const response = this._service.delete('song', id)
+  async updateSong (song) {
+    const response = await this._service.update('songs', song)
     return response
   }
 
-  getOneSong (atribute, value) {
-    // console.log(atribute)
-    // console.log(value)
-    const response = this._service.findByAtribute('song', atribute, value)
-    // console.log(response)
+  async deleteSong (id) {
+    const response = await this._service.delete('songs', id)
     return response
   }
 
-  getAllSong () {
-    // return 'All songs'
-    const response = this._service.all('song')
+  async getOneSong (atribute, value) {
+    const response = await this._service.findByAtribute('songs', atribute, value)
     return response
   }
 
-  getGenre (idGenre) {
-    console.log(idGenre)
-    return 'All songs by genre'
-  }
-
-  getArtist (idArtist) {
-    console.log(idArtist)
-    return 'All songs by artist'
+  async getAllSong () {
+    const response = await this._service.all('songs')
+    return response
   }
 }
 

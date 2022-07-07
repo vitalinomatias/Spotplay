@@ -13,14 +13,12 @@ export const validateCreteUser = [
     .exists()
     .not()
     .isEmpty()
-    .isURL()
-    .withMessage('la uri es incorrecta'),
+    .withMessage('debe existir una diireccion '),
   check('image')
     .exists()
     .not()
     .isEmpty()
-    .isURL()
-    .withMessage('la uri es incorrecta'),
+    .withMessage('debe existir una diireccion '),
   check('idArtist')
     .exists()
     .not()

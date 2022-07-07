@@ -12,31 +12,55 @@ class PlaylistRouter {
     this._router.post('/', this._checkPlaylist, this.handlePostPlaylist.bind(this))
     this._router.put('/', this.handlePutPlaylist.bind(this))
     this._router.delete('/', this.handleDeletePlaylist.bind(this))
-    // this._router.get('/id', this.handleGetOnePlaylist.bind(this))
     this._router.get('/', this.handleGetPlaylist.bind(this))
   }
 
-  handlePostPlaylist (req, res) {
-    const playlist = req.body
-    const result = this._ctrl.createNewPlaylist(playlist)
-    this._response.success(req, res, result, this._httpCode.OK)
+  async handlePostPlaylist (req, res) {
+    try {
+      const playlist = req.body
+      const result = await this._ctrl.createNewPlaylist(playlist)
+      this._response.success(req, res, result, this._httpCode.OK)
+    } catch (error) {
+      this._response.success(req, res, error, this._httpCode.INTERNAL_SERVER_ERROR)
+    }
   }
 
-  handlePutPlaylist (req, res) {
-    const playlist = req.body
-    const result = this._ctrl.updatePlaylist(playlist)
-    this._response.success(req, res, result, this._httpCode.OK)
+  async handlePutPlaylist (req, res) {
+    try {
+      const playlist = req.body
+      const result = await this._ctrl.updatePlaylist(playlist)
+      this._response.success(req, res, result, this._httpCode.OK)
+    } catch (error) {
+      this._response.success(req, res, error, this._httpCode.INTERNAL_SERVER_ERROR)
+    }
   }
 
-  handleDeletePlaylist (req, res) {
-    const playlist = req.body
-    const result = this._ctrl.deletePlaylist(playlist._id)
-    this._response.success(req, res, result, this._httpCode.OK)
+  async handleDeletePlaylist (req, res) {
+    try {
+      const playlist = req.body
+      const result = await this._ctrl.deletePlaylist(playlist._id)
+      this._response.success(req, res, result, this._httpCode.OK)
+    } catch (error) {
+      this._response.success(req, res, error, this._httpCode.INTERNAL_SERVER_ERROR)
+    }
   }
 
-  handleGetPlaylist (req, res) {
-    const result = this._ctrl.getAllPlaylist()
-    this._response.success(req, res, result, this._httpCode.OK)
+  async handleGetPlaylist (req, res) {
+    if (Object.keys(req.query).length > 0) {
+      try {
+        const result = await this._ctrl.getOnePlaylist('_name', req.query._name)
+        this._response.success(req, res, result, this._httpCode.OK)
+      } catch (error) {
+        this._response.success(req, res, error, this._httpCode.INTERNAL_SERVER_ERROR)
+      }
+    } else {
+      try {
+        const result = await this._ctrl.getAllPlaylist()
+        this._response.success(req, res, result, this._httpCode.OK)
+      } catch (error) {
+        this._response.success(req, res, error, this._httpCode.INTERNAL_SERVER_ERROR)
+      }
+    }
   }
 }
 

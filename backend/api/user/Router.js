@@ -15,9 +15,9 @@ class UserRouter {
     // this._router.get('/id', this.handleGetOneUser.bind(this))
   }
 
-  handleSignUp (req, res) {
+  async handleSignUp (req, res) {
     // const user = req.body
-    const result = this._ctrl.createNewUser(req.body)
+    const result = await this._ctrl.createNewUser(req.body)
     if (result.status === 'success') {
       this._response.success(req, res, result, 201)
     }

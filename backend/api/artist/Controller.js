@@ -4,35 +4,35 @@ class ArtistController {
     this._entity = artist
   }
 
-  createNewArtist (artist) {
+  async createNewArtist (artist) {
     const newArtist = new this._entity(artist)
-    const response = this._service.save('artist', newArtist)
+    const response = await this._service.save('artist', newArtist)
     return response
   }
 
-  updateArtist (artist) {
-    const response = this._service.update('artist', artist)
+  async updateArtist (artist) {
+    const response = await this._service.update('artist', artist)
     return response
   }
 
-  deleteArtist (id) {
-    const response = this._service.delete('artist', id)
+  async deleteArtist (id) {
+    const response = await this._service.delete('artist', id)
     return response
   }
 
-  getOneArtist (id) {
-    console.log(id)
-    return 'artist'
-  }
+  // getOneArtist (id) {
+  //   console.log(id)
+  //   return 'artist'
+  // }
 
-  getAllArtist () {
-    const response = this._service.all('artist')
+  async getOneArtist (atribute, value) {
+    const response = await this._service.findByAtribute('artist', atribute, value)
     return response
   }
 
-  getGenre (idGenre) {
-    console.log(idGenre)
-    return 'All artist by genre'
+  async getAllArtist () {
+    const response = await this._service.all('artist')
+    return response
   }
 }
 

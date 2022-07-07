@@ -14,7 +14,6 @@ export const validateCreteUser = [
     .exists()
     .not()
     .isEmpty()
-    .isURL()
     .withMessage('la uri de la imagen es incorrecta'),
   check('idGenre')
     .exists()
