@@ -9,11 +9,14 @@ import { response } from '../../response/response.js'
 import { validateCreteUser } from './validate.js'
 // import UserValidation from './validate.js'
 
-import { DataPostgresql } from '../../store/DbPostgresql.js'
+// import { DataPostgresql } from '../../store/DbPostgresql.js'
+
+import { DBMongo } from '../../store/DBMongo.js'
 
 export const userModule = (expressRouter) => {
   // const userServices = new DataJson()
-  const userServices = new DataPostgresql()
+  // const userServices = new DataPostgresql()
+  const userServices = new DBMongo()
   const userController = new UserController(userServices, User, helpers.encryptPassword)
   const userRouter = new UserRouter(expressRouter, userController, response, HttpCode, validateCreteUser)
   return userRouter._router

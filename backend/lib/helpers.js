@@ -10,6 +10,9 @@ import { response } from '../response/response.js'
 import jwt from 'jsonwebtoken'
 import { config } from '../config/default.js'
 
+// envio de correo
+import nodemailer from 'nodemailer'
+
 export const helpers = {
   // encripta las password
   encryptPassword: (password) => {
@@ -39,52 +42,18 @@ export const helpers = {
       response.error(req, res, error.array()[0].msg, 400)
     }
   }
-
-  // valida los datos
-  // validation: (validacion, req, res, next) => {
-  //   const check = expressValidation.check
-  //   const validationResult = expressValidation.validationResult
-  //   return validacion [
-  //     (req, res, next) => {
-  //       try {
-  //         validationResult(req).throw()
-  //         console.log('log')
-  //         console.log(validateCreteUser)
-  //         next()
-  //       } catch (error) {
-  //         console.log('si no funciona')
-  //         response.error(req, res, error.array()[0].msg, 400)
-  //       }
-  //     }]
-  // }
 }
 
-// valida los datos
+export const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, // true for 465, false for other ports
+  auth: {
+    user: 'vitalino.1990@gmail.com', // generated ethereal user
+    pass: 'ymwobshoqmohdtur' // generated ethereal password
+  }
+})
 
-// const check = expressValidation.check
-// const validationResult = expressValidation.validationResult
-// export const validateCreteUser = [
-//   check('username')
-//     .exists()
-//     .isLength({ min: 3 })
-//     .withMessage('Name should be atleast 3 characters'),
-//   check('email')
-//     .exists()
-//     .isEmail()
-//     .withMessage('Please enter  valid email'),
-//   check('password')
-//     .exists()
-//     .isLength({ min: 6 })
-//     .withMessage('Password should be atleast 6 chacarcetrs'),
-//   (req, res, next) => {
-//     try {
-//       validationResult(req).throw()
-//       console.log('log')
-//       console.log(validateCreteUser)
-//       next()
-//     } catch (error) {
-//       console.log('si no funciona')
-//       response.error(req, res, error.array()[0].msg, 400)
-//     }
-//   }
-// ]
+transporter.verify().then(() => {
+  console.log('Listo para enviar correos')
+})

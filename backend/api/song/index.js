@@ -7,11 +7,13 @@ import { HttpCode } from '../../response/httpCode.js'
 import Song from '../../entity/Song.js'
 import { validateCreteUser } from './validate.js'
 
-import { DataPostgresql } from '../../store/DbPostgresql.js'
+// import { DataPostgresql } from '../../store/DbPostgresql.js'
+import { DBMongo } from '../../store/DBMongo.js'
 
 export const songModule = () => {
   // const servicesSong = new DataJson()
-  const servicesSong = new DataPostgresql()
+  // const servicesSong = new DataPostgresql()
+  const servicesSong = new DBMongo()
   const songController = new SongController(servicesSong, Song)
   const songRouter = new SongRouter(express.Router, songController, response, HttpCode, validateCreteUser)
   return songRouter._router

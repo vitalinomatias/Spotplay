@@ -1,92 +1,3 @@
-# openapi: 3.0.0
-# info:
-#   title: Spotplay
-#   description: 'Es una plataforma de musica'
-#   contact:
-#     email: vitalino.1990@gmail.com
-#   license:
-#     name: Apache 2.0
-#     url: http://apache.org
-#   version: 1.0.0
-# servers:
-# - url: http://localhost:4000/api/v1
-# tags:
-# - name: Song
-#   description: canciones de la aplicacion
-# - name: User
-#   description: usuarios de la plataforma
-# - name: Playlist
-#   description: playlist de los usuarios
-# components:
-#   schemas:
-#     Song:
-#       type: object
-#       properties:
-#         id:
-#           type: integer
-#           format: int64
-#         title:
-#           type: string
-#         uri:
-#           type: string
-#         duration:
-#           type: string
-#         imagen:
-#           type: string
-#         idAlbum:
-#           type: integer
-#           format: int64
-#         idArtist:
-#           type: integer
-#           format: int64
-#         idGenre:
-#           type: integer
-#           format: int32
-#     User:
-#       type: object
-#       properties:
-#         id:
-#           type: integer
-#           format: int64
-#         username:
-#           type: string
-#         email:
-#           type: string
-#         password:
-#           type: string
-#         status:
-#           type: integer
-#           format: int64
-# paths:
-#   /user/singup:
-#     post:
-#       tags:
-#       - User
-#       summary: Crear un usuario
-#       operationId: createUser
-#       description: Se creara un usuaio para utilizarlo  la app
-#       requestBody:
-#         description: ingrese los datos del usuario a crear.
-#         content:
-#           application/json:
-#             schema:
-#               $ref: '#/components/schemas/User'
-#           application/xml:
-#             schema:
-#               $ref: '#/components/schemas/User'
-#         required: true
-#       response:
-#         200:
-#           description: registro exitoso!
-#           content:
-#             application/json:
-#               schema:
-#                 $ref: '#/components/schemas/User'
-#         400:
-#           description: bad request
-#           content: {}
-#     x-codegen-request-body-name: body
-
 openapi: 3.0.0
 info:
   title: Spotplay
@@ -210,6 +121,16 @@ components:
           type: string
         password: 
           type: string
+    PlaylistSong:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        idPlaylist:
+          type: string
+        idSong:
+          type: string
 paths:
   /song:
     post:
@@ -232,6 +153,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Song'
+        400:
+          description: bad request
+          content: {}
+        404:
+          description: not found
+          content: {}
+    get:
+      tags:
+      - Song
+      summary: retorna todas las canciones registradas
+      responses:
+        200:
+          description: todas las canciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Song'
+    put:
+      tags:
+      - Song
+      summary: actualiza una cancion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Song'
+        required: true
+      responses:
+        200:
+          description: Cancion actualizada
         400:
           description: bad request
           content: {}
@@ -265,6 +218,38 @@ paths:
         404:
           description: not found
           content: {}
+    get:
+      tags:
+      - Artist
+      summary: retorna todos los artistas
+      responses:
+        200:
+          description: todos los artistas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Artist'
+    put:
+      tags:
+      - Artist
+      summary: actualiza a un artista
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Artist'
+        required: true
+      responses:
+        200:
+          description: Artista Actualizado
+        400:
+          description: bad request
+          content: {}
+        404:
+          description: not found
+          content: {}
   /genre:
     post:
       tags:
@@ -292,6 +277,57 @@ paths:
         404:
           description: not found
           content: {}
+    get:
+      tags:
+      - Genre
+      summary: retorna todos los tipos de generos
+      responses:
+        200:
+          description: todos los generos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Genre'
+    put:
+      tags:
+      - Genre
+      summary: actualiza un genero musical
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Genre'
+        required: true
+      responses:
+        200:
+          description: Genero actualizado
+        400:
+          description: bad request
+          content: {}
+        404:
+          description: not found
+          content: {}
+    delete:
+      tags:
+      - Genre
+      summary: Elimina un genero musical
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Genre'
+        required: true
+      responses:
+        200:
+          description: Genero actualizado
+        400:
+          description: bad request
+          content: {}
+        404:
+          description: not found
+          content: {}
   /playlist:
     post:
       tags:
@@ -313,6 +349,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Playlist'
+        400:
+          description: bad request
+          content: {}
+        404:
+          description: not found
+          content: {}
+    get:
+      tags:
+      - Playlist
+      summary: retorna todas las playlist
+      responses:
+        200:
+          description: todos las playlist
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Playlist'
+    put:
+      tags:
+      - Playlist
+      summary: Actualiza una playlist
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Playlist'
+        required: true
+      responses:
+        200:
+          description: Playlist actualizada
         400:
           description: bad request
           content: {}
@@ -373,3 +441,43 @@ paths:
         404:
           description: not found
           content: {}
+  /playlistsong:
+    post:
+      tags:
+      - PlaylistSong
+      summary: agregar una cancion a  una playlist
+      operantionId: createPlaylistSong
+      description: Se agrega una cancion a una playlist
+      requestBody:
+        description: Ingresar los datos de la cancion y de la playlist
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaylistSong'
+        required: true
+      responses:
+        200:
+          description: registro exitoso!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaylistSong'
+        400:
+          description: bad request
+          content: {}
+        404:
+          description: not found
+          content: {}
+    get:
+      tags:
+      - PlaylistSong
+      summary: retorna los ids de las canciones y la playlist a la que pertenece
+      responses:
+        200:
+          description: ids de canciones y playlist
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlaylistSong'

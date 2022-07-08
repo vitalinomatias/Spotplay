@@ -7,11 +7,13 @@ import { HttpCode } from '../../response/httpCode.js'
 import Playlist from '../../entity/Playlist.js'
 import { validateCreteUser } from './validate.js'
 
-import { DataPostgresql } from '../../store/DbPostgresql.js'
+// import { DataPostgresql } from '../../store/DbPostgresql.js'
+import { DBMongo } from '../../store/DBMongo.js'
 
 export const playlistModule = () => {
   // const servicePlaylist = new DataJson()
-  const servicePlaylist = new DataPostgresql()
+  // const servicePlaylist = new DataPostgresql()
+  const servicePlaylist = new DBMongo()
   const playlistController = new PlaylistController(servicePlaylist, Playlist)
   const playlistRouter = new PlaylistRouter(express.Router, playlistController, response, HttpCode, validateCreteUser)
   return playlistRouter._router

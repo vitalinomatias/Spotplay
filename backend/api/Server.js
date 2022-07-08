@@ -15,6 +15,7 @@ import { genreModule } from './genre/index.js'
 import { playlistModule } from './playlist/index.js'
 import { userModule } from './user/index.js'
 import { authModule } from './auth/index.js'
+import { playlistSongModule } from './playlistSong/index.js'
 
 // esta clase crea el servidor
 class Server {
@@ -45,6 +46,7 @@ class Server {
     this._app.use('/api/v1/user', userModule(express.Router))
     this._app.use('/api/v1/auth', authModule(express.Router))
     this._app.use('/api/v1/docs', swaggerUI.serve, swaggerUI.setup(this._swaggerFile))
+    this._app.use('/api/v1/playlistsong', playlistSongModule(express.Router))
   }
 
   // este metodo inicia el servidor
