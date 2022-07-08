@@ -15,5 +15,9 @@ export const config = {
   },
   dbMongo: {
     uri: process.env.MONGO_URI || 'mongodb://localhost:27017/app'
+  },
+  mail: {
+    user: process.env.USER,
+    pass: process.env.PASS
   }
 }

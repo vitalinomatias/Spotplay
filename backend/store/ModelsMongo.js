@@ -16,6 +16,7 @@ const songSchema = new mongoose.Schema({
   _uri: { type: String, required: true },
   _image: { type: String, required: true },
   _idArtist: { type: String, required: true },
+  // _idArtist: { type: mongoose.Schema.Type.ObjectId, ref: 'artist', required: true }, relacion
   _idGenre: { type: String, required: true },
   _status: { type: String, required: true }
 })

@@ -1,18 +1,20 @@
 class ArtistRouter {
-  constructor (router, controller, response, httpCode, createUserValidation) {
+  constructor (router, controller, response, httpCode, createUserValidation, checkToken, chekRole) {
     this._router = router()
     this._ctrl = controller
     this._response = response
     this._httpCode = httpCode
     this._checkArtist = createUserValidation
+    this._checkToken = checkToken
+    this._checkRole = chekRole
     this.registerRoutes()
   }
 
   registerRoutes () {
-    this._router.post('/', this._checkArtist, this.handlePostArtist.bind(this))
-    this._router.put('/', this.handlePutArtist.bind(this))
-    this._router.delete('/', this.handleDeleteArtist.bind(this))
-    this._router.get('/', this.handleGetArtist.bind(this))
+    this._router.post('/', this._checkArtist, this._checkRole, this.handlePostArtist.bind(this))
+    this._router.put('/', this._checkRole, this.handlePutArtist.bind(this))
+    this._router.delete('/', this._checkRole, this.handleDeleteArtist.bind(this))
+    this._router.get('/', this._checkToken, this.handleGetArtist.bind(this))
   }
 
   async handlePostArtist (req, res) {

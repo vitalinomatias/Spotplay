@@ -1,16 +1,17 @@
 class PlaylistSongRouter {
-  constructor (router, controller, response, httpCode) {
+  constructor (router, controller, response, httpCode, checkToken) {
     this._router = router() // instancia del enrutador de express
     this._ctrl = controller
     this._response = response
     this._httpCode = httpCode
+    this._checkToken = checkToken
     this.registerRoutes()
   }
 
   registerRoutes () {
-    this._router.post('/', this.handlePostSong.bind(this))
-    this._router.delete('/', this.handleDeleteSong.bind(this))
-    this._router.get('/', this.handleGetSong.bind(this))
+    this._router.post('/', this._checkToken, this.handlePostSong.bind(this))
+    this._router.delete('/', this._checkToken, this.handleDeleteSong.bind(this))
+    this._router.get('/', this._checkToken, this.handleGetSong.bind(this))
   }
 
   async handlePostSong (req, res) {

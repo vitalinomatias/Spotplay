@@ -1,18 +1,19 @@
 class PlaylistRouter {
-  constructor (router, controller, response, httpCode, createUserValidation) {
+  constructor (router, controller, response, httpCode, createUserValidation, checkToken) {
     this._router = router() // instancia del enrutador de express
     this._ctrl = controller
     this._response = response
     this._httpCode = httpCode
     this._checkPlaylist = createUserValidation
+    this._checkToken = checkToken
     this.registerRoutes()
   }
 
   registerRoutes () {
-    this._router.post('/', this._checkPlaylist, this.handlePostPlaylist.bind(this))
-    this._router.put('/', this.handlePutPlaylist.bind(this))
-    this._router.delete('/', this.handleDeletePlaylist.bind(this))
-    this._router.get('/', this.handleGetPlaylist.bind(this))
+    this._router.post('/', this._checkToken, this._checkPlaylist, this.handlePostPlaylist.bind(this))
+    this._router.put('/', this._checkToken, this.handlePutPlaylist.bind(this))
+    this._router.delete('/', this._checkToken, this.handleDeletePlaylist.bind(this))
+    this._router.get('/', this._checkToken, this.handleGetPlaylist.bind(this))
   }
 
   async handlePostPlaylist (req, res) {

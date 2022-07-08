@@ -1,18 +1,20 @@
 class SongRouter {
-  constructor (router, controller, response, httpCode, createUserValidation) {
+  constructor (router, controller, response, httpCode, createUserValidation, checkToken, checkRole) {
     this._router = router() // instancia del enrutador de express
     this._ctrl = controller
     this._response = response
     this._httpCode = httpCode
     this._checkSong = createUserValidation
+    this._checktoken = checkToken
+    this._checkRole = checkRole
     this.registerRoutes()
   }
 
   registerRoutes () {
-    this._router.post('/', this._checkSong, this.handlePostSong.bind(this))
-    this._router.put('/', this.handlePutSong.bind(this))
-    this._router.delete('/', this.handleDeleteSong.bind(this))
-    this._router.get('/', this.handleGetSong.bind(this))
+    this._router.post('/', this._checktoken, this._checkRole, this._checkSong, this.handlePostSong.bind(this))
+    this._router.put('/', this._checktoken, this._checkRole, this.handlePutSong.bind(this))
+    this._router.delete('/', this._checktoken, this._checkRole, this.handleDeleteSong.bind(this))
+    this._router.get('/', this._checktoken, this.handleGetSong.bind(this))
     // this._router.get('/id', this.handleGetOneSong.bind(this))
     // this._router.get('/idGenre', this.handleGetGenre.bind(this))
     // this._router.get('/idArtist', this.handleGetArtist.bind(this))

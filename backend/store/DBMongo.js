@@ -2,56 +2,120 @@ import mongoose from 'mongoose'
 import { config } from '../config/default.js'
 import { models } from './ModelsMongo.js'
 
-const mongodb = async () => {
-  try {
-    const db = await mongoose.connect(config.dbMongo.uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    })
-    console.log(`MongoDB connected: ${db.connection.host}`)
-  } catch (error) {
-    console.log(error)
-  }
-}
+// const mongodb = async () => {
+//   try {
+//     const db = await mongoose.connect(config.dbMongo.uri, {
+//       useNewUrlParser: true,
+//       useUnifiedTopology: true
+//     })
+//     console.log(`MongoDB connected: ${db.connection.host}`)
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
 
 export class DBMongo {
   constructor () {
-    mongodb()
+    // mongodb()
+    this.mongodb()
     this._models = models
   }
 
+  async mongodb () {
+    try {
+      const db = await mongoose.connect(config.dbMongo.uri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      })
+      console.log(`MongoDB connected: ${db.connection.host}`)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   async save (model, data) {
-    const newModel = this._models[model](data)
-    const res = await newModel.save()
-    console.log(res)
-    return 'Guardado exitosamente'
+    try {
+      const newModel = this._models[model](data)
+      const res = await newModel.save()
+      console.log(res)
+      return 'Guardado exitosamente'
+    } catch (error) {
+      return 'Fallo la creacion'
+    }
   }
 
   async all (model) {
-    const result = await this._models[model].find({ _status: '1' })
-    return result
+    try {
+      const result = await this._models[model].find({ _status: '1' })
+      if (Object.keys(result).length > 0) {
+        return result
+      }
+      return 'No hay coincidencias'
+    } catch (error) {
+      console.log(error)
+      return 'No hay coincidencias'
+    }
   }
 
   async delete (model, id) {
-    const result = await this._models[model].findByIdAndUpdate(id, { _status: '0' })
-    return result
+    try {
+      const result = await this._models[model].findByIdAndUpdate(id, { _status: '0' })
+      if (result) {
+        console.log(result)
+        return 'Eliminación exitosa'
+      }
+      return 'Eliminacion fallida'
+    } catch (error) {
+      console.log(error)
+      return 'Eliminacion fallida'
+    }
   }
 
   async deleteOneSong (model, id) {
-    const result = await this._models[model].findByIdAndDelete(id)
-    return result
+    try {
+      const result = await this._models[model].findByIdAndDelete(id)
+      if (result) {
+        console.log(result)
+        return 'Eliminacion exitosa'
+      }
+      return 'Eliminacion fallida'
+    } catch (error) {
+      console.log(error)
+      return 'Eliminacion fallida'
+    }
   }
 
   async update (model, data) {
     // console.log(data)
-    const result = await this._models[model].findByIdAndUpdate(data._id, data)
+    try {
+      const result = await this._models[model].findByIdAndUpdate(data._id, data)
+      if (result) {
+        console.log(result)
+        console.log('if')
+        return 'Actualizacion exitosa'
+      }
+      return 'Actualizacion fallida'
+    } catch (error) {
+      // console.log(error)
+      return 'Actualizacion fallida'
+    }
     // console.log(result)
-    return result
   }
 
   async findByAtribute (model, atribute, value) {
-    const result = await this._models[model].find().where(atribute).all(value)
-    return result[0]
+    try {
+      const result = await this._models[model].find().where(atribute).all(value)
+      console.log(result)
+      if (result.length > 0) {
+        console.log(result)
+        return result
+      }
+      return 'No hay coincidencias'
+    } catch (error) {
+      console.log(error)
+      return 'No hay coincidencias'
+    }
+    // return result[0]
   }
 }
 

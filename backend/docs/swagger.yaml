@@ -23,7 +23,14 @@ tags:
   description: usuarios de la plataforma
 - name: Auth
   description: Autenticacion de los usuarios a la plataforma
+# security:
+#   - bearerAuth: []
 components:
+  # securitySchemes:
+  #   bearerAuth:
+  #     type: http
+  #     scheme: bearer
+  #     bearerFormat: JWT
   schemas:
     Song:
       type: object
@@ -89,6 +96,16 @@ components:
         status:
           type: integer
           format: int32
+    PlaylistSong:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        idPlaylist:
+          type: string
+        idSong:
+          type: string
     User:
       type: object
       properties:
@@ -120,16 +137,6 @@ components:
         username:
           type: string
         password: 
-          type: string
-    PlaylistSong:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        idPlaylist:
-          type: string
-        idSong:
           type: string
 paths:
   /song:
@@ -191,6 +198,25 @@ paths:
         404:
           description: not found
           content: {}
+    delete:
+      tags:
+      - Song
+      summary: Elimina una cancion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Song'
+        required: true
+      responses:
+        200:
+          description: Cancion eliminada
+        400:
+          description: bad request
+          content: {}
+        404:
+          description: not found
+          content: {}
   /artist:
     post:
       tags:
@@ -244,6 +270,25 @@ paths:
       responses:
         200:
           description: Artista Actualizado
+        400:
+          description: bad request
+          content: {}
+        404:
+          description: not found
+          content: {}
+    delete:
+      tags:
+      - Artist
+      summary: Elimina un Artista
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Artist'
+        required: true
+      responses:
+        200:
+          description: Artista Eliminado
         400:
           description: bad request
           content: {}
@@ -387,6 +432,84 @@ paths:
         404:
           description: not found
           content: {}
+    delete:
+      tags:
+      - Playlist
+      summary: Elimina una playlist
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Playlist'
+        required: true
+      responses:
+        200:
+          description: Playlist eliminada
+        400:
+          description: bad request
+          content: {}
+        404:
+          description: not found
+          content: {}
+  /playlistsong:
+    post:
+      tags:
+      - PlaylistSong
+      summary: agregar una cancion a  una playlist
+      operantionId: createPlaylistSong
+      description: Se agrega una cancion a una playlist
+      requestBody:
+        description: Ingresar los datos de la cancion y de la playlist
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaylistSong'
+        required: true
+      responses:
+        200:
+          description: registro exitoso!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaylistSong'
+        400:
+          description: bad request
+          content: {}
+        404:
+          description: not found
+          content: {}
+    get:
+      tags:
+      - PlaylistSong
+      summary: retorna los ids de las canciones y la playlist a la que pertenece
+      responses:
+        200:
+          description: ids de canciones y playlist
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlaylistSong'
+    delete:
+      tags:
+      - PlaylistSong
+      summary: Elimina una cancion de una playlist
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaylistSong'
+        required: true
+      responses:
+        200:
+          description: cancion eliminada
+        400:
+          description: bad request
+          content: {}
+        404:
+          description: not found
+          content: {}
   /user/signup:
     post:
       tags:
@@ -441,43 +564,15 @@ paths:
         404:
           description: not found
           content: {}
-  /playlistsong:
-    post:
-      tags:
-      - PlaylistSong
-      summary: agregar una cancion a  una playlist
-      operantionId: createPlaylistSong
-      description: Se agrega una cancion a una playlist
-      requestBody:
-        description: Ingresar los datos de la cancion y de la playlist
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PlaylistSong'
-        required: true
-      responses:
-        200:
-          description: registro exitoso!
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PlaylistSong'
-        400:
-          description: bad request
-          content: {}
-        404:
-          description: not found
-          content: {}
-    get:
-      tags:
-      - PlaylistSong
-      summary: retorna los ids de las canciones y la playlist a la que pertenece
-      responses:
-        200:
-          description: ids de canciones y playlist
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PlaylistSong'
+# securityDefinitions:
+#   petstore_auth:
+#     type: oauth2
+#     authorizationUrl: http://petstore.swagger.io/oauth/dialog
+#     flow: implicit
+#     scopes:
+#       write:pets: modify pets in your account
+#       read:pets: read your pets
+#   api_key:
+#     type: apiKey
+#     name: api_key
+#     in: header

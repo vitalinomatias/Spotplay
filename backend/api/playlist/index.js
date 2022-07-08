@@ -10,11 +10,13 @@ import { validateCreteUser } from './validate.js'
 // import { DataPostgresql } from '../../store/DbPostgresql.js'
 import { DBMongo } from '../../store/DBMongo.js'
 
+import { chekToken } from '../secure/secure.js'
+
 export const playlistModule = () => {
   // const servicePlaylist = new DataJson()
   // const servicePlaylist = new DataPostgresql()
   const servicePlaylist = new DBMongo()
   const playlistController = new PlaylistController(servicePlaylist, Playlist)
-  const playlistRouter = new PlaylistRouter(express.Router, playlistController, response, HttpCode, validateCreteUser)
+  const playlistRouter = new PlaylistRouter(express.Router, playlistController, response, HttpCode, validateCreteUser, chekToken)
   return playlistRouter._router
 }

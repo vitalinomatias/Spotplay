@@ -1,10 +1,12 @@
 class GenreRouter {
-  constructor (router, controller, response, httpCode, createUserValidation) {
+  constructor (router, controller, response, httpCode, createUserValidation, checkToken, checkRole) {
     this._router = router()
     this._ctrl = controller
     this._response = response
     this._httpCode = httpCode
     this._checkGenre = createUserValidation
+    this._checkToken = checkToken
+    this._checkRole = checkRole
     this.registerRoutes()
   }
 
@@ -13,6 +15,10 @@ class GenreRouter {
     this._router.put('/', this.handlePutGenre.bind(this))
     this._router.delete('/', this.handleDeleteGenre.bind(this))
     this._router.get('/', this.handleGetGenre.bind(this))
+    // this._router.post('/', this._checkToken, this._checkRole, this._checkGenre, this.handlePostGenre.bind(this))
+    // this._router.put('/', this._checkToken, this._checkRole, this.handlePutGenre.bind(this))
+    // this._router.delete('/', this._checkToken, this._checkRole, this.handleDeleteGenre.bind(this))
+    // this._router.get('/', this._checkToken, this.handleGetGenre.bind(this))
   }
 
   async handlePostGenre (req, res) {

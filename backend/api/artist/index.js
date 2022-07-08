@@ -9,11 +9,13 @@ import { validateCreteUser } from './validate.js'
 // import { DataPostgresql } from '../../store/DbPostgresql.js'
 import { DBMongo } from '../../store/DBMongo.js'
 
+import { chekToken, chekRole } from '../secure/secure.js'
+
 export const artistModule = () => {
   // const serviceArtist = new DataJson()
   // const serviceArtist = new DataPostgresql()
   const serviceArtist = new DBMongo()
   const artistController = new ArtistController(serviceArtist, Artist)
-  const artistRouter = new ArtistRouter(express.Router, artistController, response, HttpCode, validateCreteUser)
+  const artistRouter = new ArtistRouter(express.Router, artistController, response, HttpCode, validateCreteUser, chekToken, chekRole)
   return artistRouter._router
 }

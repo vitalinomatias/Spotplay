@@ -24,11 +24,13 @@ export const helpers = {
     return bcrypt.compareSync(password, hashPassword)
   },
 
-  generateToken: (idUser) => {
+  generateToken: (idUser, idRole) => {
     return jwt.sign({
-      id: idUser
+      id: idUser,
+      role: idRole
     }, config.jwt.secret, {
-      expiresIn: '1h'
+      // expiresIn: '5Minutes'
+      expiresIn: '10Minutes'
     })
   },
   verifyToken: (token) => {
@@ -49,8 +51,8 @@ export const transporter = nodemailer.createTransport({
   port: 465,
   secure: true, // true for 465, false for other ports
   auth: {
-    user: 'vitalino.1990@gmail.com', // generated ethereal user
-    pass: 'ymwobshoqmohdtur' // generated ethereal password
+    user: 'vitalino.1990@gmail.com',
+    pass: config.mail.pass
   }
 })
 

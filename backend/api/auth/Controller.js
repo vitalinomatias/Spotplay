@@ -9,11 +9,14 @@ export default class AuthController {
 
   async authenticationUser (user) {
     try {
-      const result = await this._services.findByAtribute('users', '_username', user.username)
+      let result = await this._services.findByAtribute('users', '_username', user.username)
+      result = result[0]
       if (result !== null) {
         const resultComparePassword = this._comparePassword(user.password, result._password)
         if (resultComparePassword) {
-          const tokenUser = this._generateToken(result._id)
+          const tokenUser = this._generateToken(result._id, result._idRole)
+          console.log(tokenUser)
+          console.log(result)
           return new this._entity({
             state: true,
             username: result._username,
